@@ -1,12 +1,11 @@
-const CONFIG_PATH = "config.json";
+const CONFIG_PATH = './config.json';
 const DEFAULT_CONFIG = {
-    accountname: "Steve",
-    host: "mc.hypixel.net",
-    proxyhost: "127.0.0.1",
+    accountname: "your_account_name",
+    host: "localhost",
     port: 25565,
     version: "1.16.5",
-    motd: "free proxies here",
+    proxyhost: "0.0.0.0",
     debug: false
 };
 
-module.exports = { CONFIG_PATH, DEFAULT_CONFIG }
+module.exports = { CONFIG_PATH, DEFAULT_CONFIG };

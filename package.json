@@ -2,7 +2,7 @@
   "name": "mioxy",
   "version": "1.0.0",
   "description": "A simple forward proxy server for minecraft",
-  "main": "proxy.js",
+  "main": "index.js",
   "dependencies": {
     "minecraft-protocol": "^1.44.0"
   },

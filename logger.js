@@ -1,32 +1,32 @@
 class Logger {
-    constructor(debug) {
-        this._debug = debug
+    constructor(debug = false) {
+        this.debugMode = debug;
     }
 
-    info(msg) {
-        console.log(`\x1b[33m[Info]\x1b[0m ${msg}`);    
+    info(message) {
+        console.log(`\x1b[32m[INFO]\x1b[0m ${message}`);
     }
 
-    warning(msg) {
-        console.log(`\x1b[33m[Warning]\x1b[0m ${msg}`)
+    warning(message) {
+        console.log(`\x1b[33m[WARNING]\x1b[0m ${message}`);
     }
 
-    client(msg) {
-        console.log(`\x1b[33m[Client]\x1b[0m ${msg}`)
+    error(message) {
+        console.log(`\x1b[31m[ERROR]\x1b[0m ${message}`);
     }
 
-    server(msg) {
-        console.log(`\x1b[33m[Server]\x1b[0m ${msg}`)
-    }
-
-    error(msg) {
-        console.log(`\x1b[31m[Error]\x1b[0m ${msg}`)
-    }
-
-    debug(msg) {
-        if (this._debug) {
-            console.log(`\x1b[34m[Debug]\x1b[0m ${msg}`)
+    debug(message) {
+        if (this.debugMode) {
+            console.log(`\x1b[34m[DEBUG]\x1b[0m ${message}`);
         }
+    }
+
+    client(message) {
+        console.log(`\x1b[36m[CLIENT]\x1b[0m ${message}`);
+    }
+
+    server(message) {
+        console.log(`\x1b[35m[SERVER]\x1b[0m ${message}`);
     }
 }
 
