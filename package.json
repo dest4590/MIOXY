@@ -1,5 +1,26 @@
 {
+  "name": "mioxy",
+  "version": "1.0.0",
+  "description": "A simple forward proxy server for minecraft",
+  "main": "proxy.js",
   "dependencies": {
     "minecraft-protocol": "^1.44.0"
-  }
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dest4590/MIOXY.git"
+  },
+  "keywords": [
+    "minecraft"
+  ],
+  "author": "dest4590",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dest4590/MIOXY/issues"
+  },
+  "homepage": "https://github.com/dest4590/MIOXY#readme"
 }

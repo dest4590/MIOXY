@@ -4,14 +4,15 @@ const fs = require("fs");
 const Logger = require('./logger');
 
 if (!fs.existsSync(CONFIG_PATH)) {
-    Logger.warning("Configuration file not found. Creating a new one with default values.");
+    logger.warning("Configuration file not found. Creating a new one with default values.");
     fs.writeFileSync(CONFIG_PATH, JSON.stringify(DEFAULT_CONFIG, null, 2), "utf-8");
-    Logger.info("Please fill in the required values in 'config.json' and restart mioxy.");
+    logger.info("Please fill in the required values in 'config.json' and restart mioxy.");
     process.exit(1);
 }
 
 const config = JSON.parse(fs.readFileSync(CONFIG_PATH, "utf-8"));
 const logger = new Logger(config.debug);
+var isPlayed = false
 let userClient;
 let proxyClient;
 const packets = [];
@@ -30,9 +31,9 @@ const banner = `
 `;
 
 console.log(banner);
-Logger.info(`Player username: \x1b[36m${config.accountname}\x1b[0m`);
-Logger.info(`Server to connect: \x1b[36m${config.host}\x1b[0m`);
-Logger.client("Creating client...");
+logger.info(`Player username: \x1b[36m${config.accountname}\x1b[0m`);
+logger.info(`Server to connect: \x1b[36m${config.host}\x1b[0m`);
+logger.client("Creating client...");
 
 const createProxyClient = () => {
     const client = createClient({
@@ -61,18 +62,14 @@ const createProxyClient = () => {
     });
 
     client.on("end", () => {
-        if (userClient) {
-            Logger.info("\x1b[37mProxy client ended\x1b[0m");
-        }
-        packets.length = 0;
+        if (userClient) logger.info("Proxy client ended")
     });
 
     client.on("error", (error) => {
         if (userClient) {
-            Logger.error(`Proxy client error: ${error}`);
+            logger.error(`Proxy client error: ${error}`);
             userClient.end(error);
         }
-        packets.length = 0;
     });
 
     return client;
@@ -83,7 +80,7 @@ proxyClient = createProxyClient();
 const getServerIcon = async (address) => {
     const response = await fetch(`https://api.mcstatus.io/v2/status/java/${address}`);
     const data = await response.json();
-    Logger.server("Fetched server info");
+    logger.server("Fetched server info");
     return data;
 };
 
@@ -104,15 +101,26 @@ const startServer = async () => {
 
     proxyServer.playerCount = serverInfo.players.online;
 
-    Logger.server("Server created!");
-    Logger.info("All system working!");
-    Logger.info("Waiting for connections!");
-    Logger.info(`Connect to \x1b[36m${config.proxyhost}:${config.port}\x1b[0m`);
+    logger.server("Server created!");
+    logger.server(`Version: ${config.version}`)
+    logger.info(`Connect to \x1b[36m${config.proxyhost}:${config.port}\x1b[0m`);
 
     proxyServer.on("login", (client) => {
-        Logger.client(`${client.username} has connected`);
+        logger.client(`${client.username} has connected`);
 
-        packets.forEach(([meta, data]) => client.write(meta.name, data));
+        // Copy all old packets
+        // TODO: "Fix invalid move player packet recieved" message
+        if (!isPlayed) packets.forEach(([meta, data]) => client.write(meta.name, data));
+        else if (isPlayed) {
+            logger.debug('Writing old packets,  ')
+            packets.forEach(([meta, data]) => {
+                if (!['position'].includes(meta.name)) {
+                    client.write(meta.name, data)
+                }
+            });
+        }
+
+        isPlayed = true
 
         userClient = client;
 
@@ -129,21 +137,12 @@ const startServer = async () => {
 
         client.on("end", async () => {
             if (proxyClient) {
-                Logger.client(`${client.username} has disconnected`);
-                packets.length = 0;
-
-                Logger.client("Recreating client and server...");
-                proxyClient.end();
-                proxyServer.close()
-                userClient = null;
-
-                proxyClient = createProxyClient();
-                await startServer();
+                logger.client(`${client.username} has disconnected`);
             }
         });
 
         client.on("error", (error) => {
-            if (proxyClient) console.error(error);
+
         });
     });
 };

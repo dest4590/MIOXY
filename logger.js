@@ -3,23 +3,23 @@ class Logger {
         this._debug = debug
     }
 
-    static info(msg) {
+    info(msg) {
         console.log(`\x1b[33m[Info]\x1b[0m ${msg}`);    
     }
 
-    static warning(msg) {
+    warning(msg) {
         console.log(`\x1b[33m[Warning]\x1b[0m ${msg}`)
     }
 
-    static client(msg) {
+    client(msg) {
         console.log(`\x1b[33m[Client]\x1b[0m ${msg}`)
     }
 
-    static server(msg) {
+    server(msg) {
         console.log(`\x1b[33m[Server]\x1b[0m ${msg}`)
     }
 
-    static error(msg) {
+    error(msg) {
         console.log(`\x1b[31m[Error]\x1b[0m ${msg}`)
     }
 
