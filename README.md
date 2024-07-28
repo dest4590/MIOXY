@@ -6,3 +6,6 @@
 * `cd MIOXY`
 * `npm install`
 * `node proxy.js`
+
+## Screenshot:
+<img src="https://raw.githubusercontent.com/dest4590/MIOXY/main/image/README/1721939854853.png" width=800>
