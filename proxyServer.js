@@ -47,6 +47,13 @@ class ProxyServer {
         return client;
     }
 
+    findLastPacket(array, searchValue) {
+        var index = array.slice().reverse().findIndex(x => x[0].name === searchValue);
+        var count = array.length - 1;
+        var finalIndex = index >= 0 ? count - index : index;
+        return finalIndex;
+    }
+
     async getServerIcon(address) {
         const response = await fetch(`https://api.mcstatus.io/v2/status/java/${address}`);
         const data = await response.json();
@@ -57,15 +64,19 @@ class ProxyServer {
     async start() {
         this.proxyClient = this.createProxyClient();
         const serverInfo = await this.getServerIcon(this.config.host);
-        const motdFormatted = serverInfo.motd.raw;
+        try { this.motdFormatted = serverInfo.motd.raw }
 
+        catch (e) {
+            this.logger.warning("Failed to read motd")
+            this.motdFormatted = ""
+        }
         const proxyServer = createServer({
             "online-mode": false,
             host: this.config.proxyhost,
             port: this.config.port,
             keepAlive: false,
             version: this.config.version,
-            motd: motdFormatted,
+            motd: this.motdFormatted,
             favicon: serverInfo.icon,
             maxPlayers: serverInfo.players.max,
         });
