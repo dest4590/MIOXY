@@ -4,9 +4,9 @@
   "description": "A simple forward proxy server for minecraft",
   "main": "index.js",
   "dependencies": {
-    "minecraft-protocol": "^1.44.0"
+    "gradient-string": "^2.0.2",
+    "minecraft-protocol": "^1.26.5"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

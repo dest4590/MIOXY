@@ -2,6 +2,7 @@ const { CONFIG_PATH, DEFAULT_CONFIG } = require("./settings");
 const fs = require("fs");
 const Logger = require('./logger');
 const ProxyServer = require('./proxyServer');
+const gradient = require('gradient-string');
 
 const logger = new Logger();
 
@@ -15,18 +16,16 @@ if (!fs.existsSync(CONFIG_PATH)) {
 const config = JSON.parse(fs.readFileSync(CONFIG_PATH, "utf-8"));
 
 const banner = `
-\x1b[34m
 ███╗░░░███╗██╗░█████╗░██╗░░██╗██╗░░░██╗
 ████╗░████║██║██╔══██╗╚██╗██╔╝╚██╗░██╔╝      MinecraftProxyServer
 ██╔████╔██║██║██║░░██║░╚███╔╝░░╚████╔╝░      By @dest4590
 ██║╚██╔╝██║██║██║░░██║░██╔██╗░░░╚██╔╝░░      
 ██║░╚═╝░██║██║╚█████╔╝██╔╝╚██╗░░░██║░░░      
 ╚═╝░░░░░╚═╝╚═╝░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░      Also try CollapseLoader
-\x1b[0m
 `;
 
 console.clear();
-console.log(banner);
+console.log(gradient.mind(banner));
 
 const proxyServer = new ProxyServer(config, logger);
 proxyServer.start();
