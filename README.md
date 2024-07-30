@@ -1,4 +1,6 @@
-# MIOXY
+<h1 align=center>MIOXY</h1>
+
+<div align=center><a href="https://github.com/dest4590/MIOXY/blob/main/README-RU.md">Русский</a></br><a href="https://github.com/dest4590/MIOXY/blob/main/README.md">English</a></div>
 
 ## Simple forward proxy server for minecraft
 
